@@ -1,0 +1,15 @@
+#!/bin/bash
+
+MAIL_FROM=$1
+MAIL_TO=$2
+MAIL_SUBJECT=$3
+
+if [ "$MAIL_FROM" = "-h" ] || [ "$MAIL_FROM" = "--help" ] || [ -z "$MAIL_FROM" ] || [ -z "$MAIL_TO" ]; then
+   echo "Usage: $0 FROM_ADDRESS TO_ADDRESS [SUBJECT]"
+   exit
+fi
+
+{ \
+    echo -e "From: $MAIL_FROM\nTo: $MAIL_TO\nSubject: $MAIL_SUBJECT\n"; \
+    gpg -ea -r "$MAIL_TO" -o - -; \
+} | sendmail $MAIL_TO
